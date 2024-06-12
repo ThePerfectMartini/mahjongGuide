@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mahjong_yakuguide/tileRemains.dart';
 import 'handGenerator.dart';
 
 void main() {
@@ -14,7 +15,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-
   final String title;
 
   @override
@@ -35,12 +34,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  
-  var handClass = HandGenerator();
+
+  var handClass = TileRemains();
 
   void _incrementCounter() {
-    handClass.generate();
-
+    print(handClass.randomShunz(1));
+    print(handClass.randomCuz(2, 3));
+    print(handClass.randomCuz(1, 4));
+    handClass.show();
+    handClass.init();
 
     setState(() {
       _counter++;
