@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mahjong_yakuguide/tileRemains.dart';
+import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
 import 'handGenerator.dart';
 
 void main() {
@@ -35,18 +35,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  var handClass = TileRemains();
+  var handClass = handGenerator();
 
   void _incrementCounter() {
-    print(handClass.randomShunz(1));
-    print(handClass.randomCuz(2, 3));
-    print(handClass.randomCuz(1, 4));
-    handClass.show();
+    // 테스트용 집에서 지울거
     handClass.init();
+
+    // for (int i = 0; i < 100; i++){
+    //   handClass.init();
+    //   _counter++;
+    // }
 
     setState(() {
       _counter++;
     });
+    print(handClass.result_map);
+    if (handClass.menzen) print('리치');
+    
   }
 
   @override

@@ -1,101 +1,102 @@
-  // import 'dart:math';
-  // import 'tileRemains.dart';
+import 'dart:math';
 
-  // class HandGenerator {
-  //   Random random = Random();
-  //   TileRemains allTiles = TileRemains();
+class handGenerator {
+  Random random = Random();
+  late bool menzen;
+  late List<int> huro;
 
-  //   late int shunCount;
-  //   late int cuzCount;
+  late Map<int, int> tiles_map;
 
-  //   late List<int> tileRemains;
+  late List<int> tiles_shunz;
 
-  //   late List<int> selectedNumber;
-  //   late List<int> headRange;
-  //   late List<int> body;
+  late Map<String, List<int>> result_map;
 
-  //   // 밖으로 내보낼 것
+  int s = 0;
+  int c = 0;
+  int k = 0;
 
-  //   __init__() {
-  //     // 초기화
-  //     shunCount = random.nextInt(5);
-  //     cuzCount = 4 - shunCount;
-  //     tileRemains = List.from(allTiles.getTiles());
+  init() {
+    s = 0;
+    c = 0;
+    k = 0;
+    typeShuffle();
 
-  //     selectedNumber = [];
-  //     headRange = [];
-  //     body = [];
-  //   }
 
-  //   generate() {
-  //     __init__();
+    result_map = {};
+    tiles_map = {
+      for (int i = 11; i <= 47; i++)
+        if (i != 20 && i != 30 && i != 40) i: 4
+    };
+    tiles_shunz = [
+      for (int i = 1; i <= 3; i++)
+        for (int j = 1; j <= 7; j++)
+          for (int k = 0; k < 4; k++)
+            i * 10 + j
+    ];
 
-  //     // 슌츠 추가
-  //     for (int i = 0; i < shunCount; i++) {
-  //       List<int> shunRange = tileRemains
-  //           .where((element) => element < 40 && ((element % 10) < 8))
-  //           .toList();
-  //       int selected = shunRange[random.nextInt(shunRange.length)];
 
-  //       tileRemains.remove(selected);
-  //       tileRemains.remove(selected + 1);
-  //       tileRemains.remove(selected + 2);
-  //       selectedNumber.add(selected);
-  //       body.add(selected);
-  //       body.add(selected + 1);
-  //       body.add(selected + 2);
-  //     }
+    menzen = random.nextBool();
+    huro = [];
+    if (menzen) {huro = [0,0,0,0];} else {setHuro();}
 
-  //     for (int i = 0; i < cuzCount; i++) {
-  //       int type = 3; // 3이면 커쯔 4면 깡쯔
-  //       List<int> cuzRange = [];
-  //       // 선택할수있는 범위 뽑아내기 (커쯔니까 3개이상 남아있는것들만)
-  //       for (int number in tileRemains.toSet()) {
-  //         int count = tileRemains.where((x) => x == number).length;
+    result_map['슌츠'] = randomTiles(s, 1);
+    result_map['커츠'] = randomTiles(c, 3);
+    result_map['깡츠'] = randomTiles(k, 4);
+    result_map['머리'] = randomTiles(1, 2);
+    result_map['후로'] = huro;
+  }
 
-  //         if (count >= type) {
-  //           cuzRange.add(number);
-  //         }
-  //       }
+  setHuro(){
+    huro.add(random.nextInt(2));
+    huro.add(random.nextInt(2));
+    huro.add(random.nextInt(2));
+    huro.add(random.nextInt(2));
+    if (huro[0] == 0 && huro[1] == 0 && huro[2] == 0 && huro[3] == 0){
+      menzen = true;
+      }
+  }
 
-  //       ///
-  //       /// 에러 발생 : allTiles(TileRemail클래스)가 계속 패 전체 배열을 반환하는게 아닌 수정이 된 채로 남아있음
-  //       ///
-  //       ///
-  //       int selected = cuzRange[random.nextInt(cuzRange.length)];
+  randomTiles(int count, int type) {
+    List<int> result = [];
+    for (int i = 0; i < count; i++){
+      switch (type){
+        case 1:
+          int randomInt = random.nextInt(tiles_shunz.length);
+          int selected = tiles_shunz[randomInt];
+          tiles_shunz.remove(selected);
+          tiles_shunz.remove(selected+1);
+          tiles_shunz.remove(selected+2);
+          tiles_map[selected] = tiles_map[selected]! - 1;
+          tiles_map[selected + 1] = tiles_map[selected + 1]! - 1;
+          tiles_map[selected + 2] = tiles_map[selected + 2]! - 1;
+          result.add(selected);
+        default:
+          List<int> tiles = [];
 
-  //       for (int i = 0; i < type; i++) {
-  //         body.add(selected);
-  //         tileRemains.remove(selected);
-  //       }
+          tiles_map.forEach((key, value) {
+            if (value >= type) tiles.add(key);
+          });
+          int selected = tiles[random.nextInt(tiles.length)];
+          result.add(selected);
+          tiles_map[selected] = tiles_map[selected]! - type;
+      }
+    }
 
-  //       selectedNumber.add(selected);
-  //     }
+    return result;
+  }
 
-  //     for (int number in tileRemains.toSet()) {
-  //       int count = tileRemains.where((x) => x == number).length;
-  //       if (count >= 2) {
-  //         headRange.add(number);
-  //       }
-  //     }
 
-  //     // 머리 선택
-  //     int head = headRange[random.nextInt(headRange.length)];
-  //     selectedNumber.add(head);
-  //     body.add(head);
-  //     body.add(head);
-
-  //     body.sort();
-
-  //     print('''\n
-  //       -------------------
-  //       패 전체 : $body
-  //       슌츠개수 : $shunCount 
-  //       슌츠 배열 : ${selectedNumber.sublist(0, shunCount)}
-  //       커츠개수 : $cuzCount
-  //       커츠 배열 : ${selectedNumber.sublist(shunCount, shunCount + cuzCount)}
-  //       머리 : ${selectedNumber.last}
-  //       -------------------
-  //     ''');
-  //   }
-  // }
+  typeShuffle() {
+    for (int i = 0 ; i < 4; i++){
+      bool first_con = (random.nextInt(100)<80);
+      bool second_con = (random.nextInt(100)<10);
+      if (first_con){ // 80% 확률로 슌츠
+        s++;
+      }else if(second_con){ // 10% 확률로 깡쯔
+        k++;
+      }else{
+        c++;
+      }
+    }
+  }
+}
