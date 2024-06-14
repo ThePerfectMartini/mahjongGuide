@@ -11,17 +11,8 @@ class handGenerator {
 
   late Map<String, List<int>> result_map;
 
-  int s = 0;
-  int c = 0;
-  int k = 0;
 
   init() {
-    s = 0;
-    c = 0;
-    k = 0;
-    typeShuffle();
-
-
     result_map = {};
     tiles_map = {
       for (int i = 11; i <= 47; i++)
@@ -33,27 +24,41 @@ class handGenerator {
           for (int k = 0; k < 4; k++)
             i * 10 + j
     ];
+    tileSet();
+    setHuro();
+  }
 
+  setHuro(){
+    if (random.nextBool()) {
+      result_map['후로'] = [0,0,0,0];
+    } 
+    else {
+      result_map['후로']?.add(random.nextInt(2));
+      result_map['후로']?.add(random.nextInt(2));
+      result_map['후로']?.add(random.nextInt(2));
+      result_map['후로']?.add(random.nextInt(2));
+    }
+  }
 
-    menzen = random.nextBool();
-    huro = [];
-    if (menzen) {huro = [0,0,0,0];} else {setHuro();}
-
+  tileSet() {
+    int s = 0;
+    int c = 0;
+    int k = 0;
+    for (int i = 0 ; i < 4; i++){
+      bool first_con = (random.nextInt(100)<80);
+      bool second_con = (random.nextInt(100)<10);
+      if (first_con){ // 80% 확률로 슌츠
+        s++;
+      }else if(second_con){ // 10% 확률로 깡쯔
+        k++;
+      }else{
+        c++;
+      }
+    }
     result_map['슌츠'] = randomTiles(s, 1);
     result_map['커츠'] = randomTiles(c, 3);
     result_map['깡츠'] = randomTiles(k, 4);
     result_map['머리'] = randomTiles(1, 2);
-    result_map['후로'] = huro;
-  }
-
-  setHuro(){
-    huro.add(random.nextInt(2));
-    huro.add(random.nextInt(2));
-    huro.add(random.nextInt(2));
-    huro.add(random.nextInt(2));
-    if (huro[0] == 0 && huro[1] == 0 && huro[2] == 0 && huro[3] == 0){
-      menzen = true;
-      }
   }
 
   randomTiles(int count, int type) {
@@ -86,17 +91,5 @@ class handGenerator {
   }
 
 
-  typeShuffle() {
-    for (int i = 0 ; i < 4; i++){
-      bool first_con = (random.nextInt(100)<80);
-      bool second_con = (random.nextInt(100)<10);
-      if (first_con){ // 80% 확률로 슌츠
-        s++;
-      }else if(second_con){ // 10% 확률로 깡쯔
-        k++;
-      }else{
-        c++;
-      }
-    }
-  }
+  
 }
