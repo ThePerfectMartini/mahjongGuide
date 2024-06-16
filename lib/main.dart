@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     
     // 테스트용 집에서 지울거
     handClass.init();
-    var categorizer = yakuCategorizer(handClass.result_map);
+    var categorizer = yakuCategorizer(handClass);
 
     setState(() {
       _counter++;
