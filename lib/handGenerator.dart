@@ -12,7 +12,6 @@ class handGenerator {
 
   late List<int> body;
 
-
   init() {
     body = [];
     result_map = {};
@@ -23,25 +22,27 @@ class handGenerator {
     tiles_shunz = [
       for (int i = 1; i <= 3; i++)
         for (int j = 1; j <= 7; j++)
-          for (int k = 0; k < 4; k++)
-            i * 10 + j
+          for (int k = 0; k < 4; k++) i * 10 + j
     ];
     tileSet();
     selectAgariTile();
+    showResult();
   }
 
   tileSet() {
     int s = 0;
     int c = 0;
     int k = 0;
-    for (int i = 0 ; i < 4; i++){
-      bool first_con = (random.nextInt(100)<80);
-      bool second_con = (random.nextInt(100)<10);
-      if (first_con){ // 80% 확률로 슌츠
+    for (int i = 0; i < 4; i++) {
+      bool first_con = (random.nextInt(100) < 80);
+      bool second_con = (random.nextInt(100) < 10);
+      if (first_con) {
+        // 80% 확률로 슌츠
         s++;
-      }else if(second_con){ // 10% 확률로 깡쯔
+      } else if (second_con) {
+        // 10% 확률로 깡쯔
         k++;
-      }else{
+      } else {
         c++;
       }
     }
@@ -49,28 +50,27 @@ class handGenerator {
     result_map['커츠'] = randomTiles(c, 3);
     result_map['깡츠'] = randomTiles(k, 4);
     result_map['머리'] = randomTiles(1, 2);
-    setHuro(s+c, k);
+    setHuro(s + c, k);
   }
 
-  setHuro(int n, int k){
+  setHuro(int n, int k) {
     huro = [];
-    for (int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
       huro.add(random.nextInt(2));
     }
-    for (int i = 0; i < k; i++){
+    for (int i = 0; i < k; i++) {
       huro.add(2);
     }
-
   }
 
   randomTiles(int count, int type) {
     List<int> result = [];
-    for (int i = 0; i < count; i++){
-      switch (type){
+    for (int i = 0; i < count; i++) {
+      switch (type) {
         case 1:
           int randomInt = random.nextInt(tiles_shunz.length);
           int selected = tiles_shunz[randomInt];
-          for (int i = selected; i <= selected+2; i++){
+          for (int i = selected; i <= selected + 2; i++) {
             tiles_shunz.remove(i);
             tiles_map[i] = tiles_map[i]! - 1;
             body.add(i);
@@ -93,12 +93,13 @@ class handGenerator {
     return result;
   }
 
-  selectAgariTile(){
+  selectAgariTile() {
     late int index;
-    int shunLength = result_map['슌츠']!.length;
     List<int> agariProb = [];
-    
-    if (huro.contains(0)){
+    agariProb.add(body.length - 1);
+    agariProb.add(body.length - 2);
+
+    if (huro.contains(0)) {
       for (int i = 0; i < huro.length; i++) {
         if (huro[i] == 0) {
           int index = i * 3;
@@ -108,26 +109,44 @@ class handGenerator {
         }
       }
       index = agariProb[random.nextInt(agariProb.length)];
-    }else {
-      index = body.length-1;
+    } else {
+      index = body.length - 1; // 머리선택 (하다까단기)
     }
 
-    
-
-    print(body);
-
-    if (shunLength*3 >= index+1){
+    if (result_map['슌츠']!.length * 3 >= index + 1) {
       print('슌츠범위 선택됨');
-    }else{
-      print('다른범위 선택');
+      int firstOrLast = (index + 1) % 3;
+      int digit = body[index] % 10;
+      if (firstOrLast == 2) {
+        print('간짱');
+        result_map['대기'] = [1];
+      } else if (((firstOrLast == 0) && (digit == 3)) ||
+          ((firstOrLast == 1) && (digit == 7))) {
+        print('변짱');
+        result_map['대기'] = [2];
+      } else {
+        print('양면');
+        result_map['대기'] = [0];
+      }
+    } else if (body.length == index + 1) {
+      print('머리 선택됨 : 단기');
+      result_map['대기'] = [4];
+    } else {
+      print("커츠 선택됨 : 샤보");
+      result_map['대기'] = [3];
     }
 
-    result_map['대기'] = [1];
+    // 양면 0, 간짱 1, 변짱 2, / 샤보 3, / 단기 4
     result_map['화료패'] = [body[index]];
-    result_map['화료형태'] = [0];
-
-    print(huro);
+    result_map['화료형태'] = [random.nextInt(2)];
   }
 
-  
+  showResult() {
+    print('''
+      
+      $body
+      $huro
+      $result_map
+      ''');
+  }
 }

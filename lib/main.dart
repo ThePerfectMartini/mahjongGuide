@@ -3,8 +3,14 @@ import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
 import 'package:flutter_mahjong_yakuguide/yakuCategorizer.dart';
 import 'handGenerator.dart';
 
+var handClass = handGenerator();
+
 void main() {
   runApp(const MyApp());
+
+  for (int k = 0; k < 5; k++) {
+    handClass.init();
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -36,11 +42,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  var handClass = handGenerator();
-
   void _incrementCounter() {
-    
-    // 테스트용 집에서 지울거
     handClass.init();
     var categorizer = yakuCategorizer(handClass);
 
@@ -49,8 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     categorizer.init();
-
-    
   }
 
   @override
