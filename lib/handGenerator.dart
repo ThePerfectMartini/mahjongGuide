@@ -8,7 +8,7 @@ class handGenerator {
 
   late List<int> tiles_shunz;
 
-  late Map<String, List<int>> result_map;
+  late Map<String, dynamic> result_map;
 
   late List<int> body;
 
@@ -50,17 +50,29 @@ class handGenerator {
     result_map['커츠'] = randomTiles(c, 3);
     result_map['깡츠'] = randomTiles(k, 4);
     result_map['머리'] = randomTiles(1, 2);
-    setHuro(s + c, k);
+    setHuro(s, c, k);
   }
 
-  setHuro(int n, int k) {
+  setHuro(int s, int c, int k) {
     huro = [];
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < s; i++) {
       huro.add(random.nextInt(2));
     }
-    for (int i = 0; i < k; i++) {
-      huro.add(2);
+    for (int i = 0; i < c; i++) {
+      if (random.nextInt(2) != 0) {
+        huro.add(2);
+      } else {
+        huro.add(3);
+      }
     }
+    for (int i = 0; i < k; i++) {
+      if (random.nextInt(2) != 0) {
+        huro.add(4);
+      } else {
+        huro.add(5);
+      }
+    }
+    result_map['후로'] = huro;
   }
 
   randomTiles(int count, int type) {
@@ -101,11 +113,13 @@ class handGenerator {
 
     if (huro.contains(0)) {
       for (int i = 0; i < huro.length; i++) {
+        int index = i * 3;
         if (huro[i] == 0) {
-          int index = i * 3;
           agariProb.add(index);
           agariProb.add(index + 1);
           agariProb.add(index + 2);
+        } else if (huro[i] == 2) {
+          agariProb.addAll([index, index, index]);
         }
       }
       index = agariProb[random.nextInt(agariProb.length)];
@@ -114,39 +128,32 @@ class handGenerator {
     }
 
     if (result_map['슌츠']!.length * 3 >= index + 1) {
-      print('슌츠범위 선택됨');
       int firstOrLast = (index + 1) % 3;
       int digit = body[index] % 10;
       if (firstOrLast == 2) {
-        print('간짱');
-        result_map['대기'] = [1];
+        result_map['대기'] = "간짱";
       } else if (((firstOrLast == 0) && (digit == 3)) ||
           ((firstOrLast == 1) && (digit == 7))) {
-        print('변짱');
-        result_map['대기'] = [2];
+        result_map['대기'] = "변짱";
       } else {
-        print('양면');
-        result_map['대기'] = [0];
+        result_map['대기'] = "양면";
       }
-    } else if (body.length == index + 1) {
-      print('머리 선택됨 : 단기');
-      result_map['대기'] = [4];
+    } else if (body.length <= index + 2) {
+      result_map['대기'] = "단기";
     } else {
-      print("커츠 선택됨 : 샤보");
-      result_map['대기'] = [3];
+      result_map['대기'] = "샤보";
     }
 
     // 양면 0, 간짱 1, 변짱 2, / 샤보 3, / 단기 4
-    result_map['화료패'] = [body[index]];
-    result_map['화료형태'] = [random.nextInt(2)];
+    result_map['화료패'] = body[index];
+    if (random.nextInt(4) == 0) {
+      result_map['화료형태'] = "쯔모";
+    } else {
+      result_map['화료형태'] = "론";
+    }
   }
 
   showResult() {
-    print('''
-      
-      $body
-      $huro
-      $result_map
-      ''');
+    print(result_map);
   }
 }

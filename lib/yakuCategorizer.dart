@@ -6,9 +6,7 @@ class yakuCategorizer {
 
   late bool menzen;
 
-  yakuCategorizer(this.handClass) {
-    hand_map = handClass.result_map;
-  }
+  yakuCategorizer(this.handClass) {}
 
   init() {
     List<int> huro = handClass.huro;
