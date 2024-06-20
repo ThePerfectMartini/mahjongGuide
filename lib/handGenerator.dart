@@ -49,7 +49,7 @@ class handGenerator {
     result_map['슌츠'] = randomTiles(s, 1);
     result_map['커츠'] = randomTiles(c, 3);
     result_map['깡츠'] = randomTiles(k, 4);
-    result_map['머리'] = randomTiles(1, 2);
+    result_map['머리'] = randomTiles(1, 2)[0];
     setHuro(s, c, k);
   }
 

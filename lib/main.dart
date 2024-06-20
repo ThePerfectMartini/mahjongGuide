@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mahjong_yakuguide/buCalculator.dart';
 import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
 import 'package:flutter_mahjong_yakuguide/yakuCategorizer.dart';
 import 'handGenerator.dart';
@@ -8,9 +9,11 @@ var handClass = handGenerator();
 void main() {
   runApp(const MyApp());
 
-  for (int k = 0; k < 5; k++) {
+  for (int k = 0; k < 50; k++) {
     handClass.init();
+    buCalculator(handClass.result_map);
   }
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() {
     handClass.init();
     var categorizer = yakuCategorizer(handClass);
+
+    
 
     setState(() {
       _counter++;
