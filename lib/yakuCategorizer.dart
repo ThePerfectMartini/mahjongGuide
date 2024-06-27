@@ -1,21 +1,34 @@
 import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
+import 'package:flutter_mahjong_yakuguide/yaku_condition/yaku_check.dart';
 
-class yakuCategorizer {
-  late Map<String, List<int>> hand_map;
-  handGenerator handClass;
+yakuCategorizer(Map hand_map,List<int> body, bool menzen){
 
-  late bool menzen;
+  // todos: 역별로 파일 분리
 
-  yakuCategorizer(this.handClass) {}
+  // todos: 주석 잘 달아서 정리하기.
 
-  init() {
-    List<int> huro = handClass.huro;
-    if (huro[0] == 0 && huro[1] == 0 && huro[2] == 0 && huro[3] == 0) {
-      menzen = true;
-      print('리치');
-    } else {
-      menzen = false;
-      print('역없음');
-    }
+  List<String> yaku = [];
+
+  tanyao_check(body, yaku);
+  yakuHai_check(hand_map, yaku);
+  
+
+  if (menzen){
+    menzentsumo_check(hand_map, yaku);
+    pingfu_check(hand_map, yaku);
+    ipeko_check(hand_map, yaku);
+
+    
+    
+  }else{
+
   }
+
+  if (yaku.length >= 1){
+    print(hand_map);
+    print(yaku);
+  }else{
+
+  }
+
 }

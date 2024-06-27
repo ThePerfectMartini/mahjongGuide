@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mahjong_yakuguide/buCalculator.dart';
 import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
+import 'package:flutter_mahjong_yakuguide/variable.dart';
 import 'package:flutter_mahjong_yakuguide/yakuCategorizer.dart';
 import 'handGenerator.dart';
 
@@ -8,12 +9,15 @@ var handClass = handGenerator();
 
 void main() {
   runApp(const MyApp());
-
-  for (int k = 0; k < 50; k++) {
+  for (int k = 0; k < 1500; k++) {
     handClass.init();
-    buCalculator(handClass.result_map);
+    handClass.result_map['부수'] = buCalculator(handClass.result_map, handClass.menzen);
+    yakuCategorizer(handClass.result_map, handClass.body ,handClass.menzen);
   }
-  
+
+  // 변수 파일 하나 만들어서 거기서 변수 관리하기
+  // 메인에는 앱기동에 관련한 것만 넣어놓기 
+  print(a);
 }
 
 class MyApp extends StatelessWidget {
@@ -47,7 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     handClass.init();
-    var categorizer = yakuCategorizer(handClass);
 
     
 
@@ -55,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
 
-    categorizer.init();
   }
 
   @override

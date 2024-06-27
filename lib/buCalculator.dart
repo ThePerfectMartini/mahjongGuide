@@ -1,15 +1,10 @@
 
-buCalculator(Map hand_map){
+buCalculator(Map hand_map, bool menzen){
   int bu = 20;
-  bool menzen = true;
 
   List<int> huro = hand_map['후로'];
 
   // Todo: 멤버변수 리스트 
-
-
-  // Todo: 멘젠 상태 체크
-  huro.forEach((n){if (n%2 != 0) menzen = false; });
 
 
   // Todo: 화료 타입별 부수 추가
@@ -57,6 +52,6 @@ buCalculator(Map hand_map){
 
   // Todo: 리턴으로 부수 제공
   bu = (bu / 10).ceil()*10;
-  print('''부수 : $bu''');
+  return bu;
 
 }

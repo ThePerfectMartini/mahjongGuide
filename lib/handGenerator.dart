@@ -4,6 +4,8 @@ class handGenerator {
   Random random = Random();
   late List<int> huro;
 
+  bool menzen = true;
+
   late Map<int, int> tiles_map;
 
   late List<int> tiles_shunz;
@@ -13,6 +15,7 @@ class handGenerator {
   late List<int> body;
 
   init() {
+    menzen = true;
     body = [];
     result_map = {};
     tiles_map = {
@@ -26,7 +29,6 @@ class handGenerator {
     ];
     tileSet();
     selectAgariTile();
-    showResult();
   }
 
   tileSet() {
@@ -51,6 +53,7 @@ class handGenerator {
     result_map['깡츠'] = randomTiles(k, 4);
     result_map['머리'] = randomTiles(1, 2)[0];
     setHuro(s, c, k);
+    menzenCheck();
   }
 
   setHuro(int s, int c, int k) {
@@ -105,6 +108,10 @@ class handGenerator {
     return result;
   }
 
+  menzenCheck(){
+    huro.forEach((n){if (n%2 != 0) menzen = false; });
+  }
+
   selectAgariTile() {
     late int index;
     List<int> agariProb = [];
@@ -151,9 +158,5 @@ class handGenerator {
     } else {
       result_map['화료형태'] = "론";
     }
-  }
-
-  showResult() {
-    print(result_map);
   }
 }
