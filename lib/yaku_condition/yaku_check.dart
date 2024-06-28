@@ -91,7 +91,20 @@ tanyao_check(List<int> body, List<String> yaku){
 
 // 2판 역
 
-// 삼색동순
+// 삼색동순, 삼색동각 체크
+Sanshoku_check(Map hand_map, List<String> yaku){
+  List<int> number = List.generate(9, (int index) => index+1);
+  for (int i in number){
+    bool a = hand_map['슌츠'].contains(10+i);
+    bool b = hand_map['슌츠'].contains(20+i);
+    bool c = hand_map['슌츠'].contains(30+i);
+    if (a && b && c){
+      yaku.add('삼색동순');
+    }
+  }
+  
+}
+
 
 
 // 일기통관

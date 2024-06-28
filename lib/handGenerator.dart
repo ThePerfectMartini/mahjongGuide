@@ -58,24 +58,33 @@ class handGenerator {
 
   setHuro(int s, int c, int k) {
     huro = [];
+    bool menzen = true;
     for (int i = 0; i < s; i++) {
-      huro.add(random.nextInt(2));
+      if (random.nextBool()) {
+        huro.add(0);
+      } else {
+        huro.add(1);
+        menzen = false;
+      }
     }
     for (int i = 0; i < c; i++) {
-      if (random.nextInt(2) != 0) {
+      if (random.nextBool()) {
         huro.add(2);
       } else {
         huro.add(3);
+        menzen = false;
       }
     }
     for (int i = 0; i < k; i++) {
-      if (random.nextInt(2) != 0) {
+      if (random.nextBool()) {
         huro.add(4);
       } else {
         huro.add(5);
+        menzen = false;
       }
     }
     result_map['후로'] = huro;
+    result_map['멘젠'] = menzen;
   }
 
   randomTiles(int count, int type) {

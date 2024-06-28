@@ -1,7 +1,7 @@
 import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
 import 'package:flutter_mahjong_yakuguide/yaku_condition/yaku_check.dart';
 
-yakuCategorizer(Map hand_map,List<int> body, bool menzen){
+yakuCategorizer(Map hand_map,List<int> body){
 
   // todos: 역별로 파일 분리
 
@@ -11,22 +11,23 @@ yakuCategorizer(Map hand_map,List<int> body, bool menzen){
 
   tanyao_check(body, yaku);
   yakuHai_check(hand_map, yaku);
+  Sanshoku_check(hand_map, yaku);
   
 
-  if (menzen){
+  if (hand_map['멘젠']){
     menzentsumo_check(hand_map, yaku);
     pingfu_check(hand_map, yaku);
     ipeko_check(hand_map, yaku);
-
-    
     
   }else{
 
   }
 
   if (yaku.length >= 1){
-    print(hand_map);
-    print(yaku);
+    if (yaku.contains('삼색동순')){
+      print(hand_map);
+      print(yaku);
+    }
   }else{
 
   }

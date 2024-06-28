@@ -12,7 +12,7 @@ void main() {
   for (int k = 0; k < 1500; k++) {
     handClass.init();
     handClass.result_map['부수'] = buCalculator(handClass.result_map, handClass.menzen);
-    yakuCategorizer(handClass.result_map, handClass.body ,handClass.menzen);
+    yakuCategorizer(handClass.result_map, handClass.body);
   }
 
   // 변수 파일 하나 만들어서 거기서 변수 관리하기
