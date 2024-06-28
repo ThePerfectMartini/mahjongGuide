@@ -94,14 +94,29 @@ tanyao_check(List<int> body, List<String> yaku){
 // 삼색동순, 삼색동각 체크
 Sanshoku_check(Map hand_map, List<String> yaku){
   List<int> number = List.generate(9, (int index) => index+1);
-  for (int i in number){
-    bool a = hand_map['슌츠'].contains(10+i);
-    bool b = hand_map['슌츠'].contains(20+i);
-    bool c = hand_map['슌츠'].contains(30+i);
-    if (a && b && c){
-      yaku.add('삼색동순');
+  String type = '';
+
+  if (hand_map['슌츠'].length >= 3){
+    type = '슌츠';
+  }else if(hand_map['커츠'].length >= 3){
+    type = '커츠';
+  }
+  if (type != ''){
+    for (int i in number){
+      bool a = hand_map[type].contains(10+i);
+      bool b = hand_map[type].contains(20+i);
+      bool c = hand_map[type].contains(30+i);
+      if (a && b && c){
+        if (type == '슌츠'){
+          yaku.add('삼색동순');
+        }else{
+          yaku.add('삼색동각');
+        }
+        
+      }
     }
   }
+  
   
 }
 

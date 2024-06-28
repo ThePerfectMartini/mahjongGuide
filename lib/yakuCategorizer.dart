@@ -24,7 +24,7 @@ yakuCategorizer(Map hand_map,List<int> body){
   }
 
   if (yaku.length >= 1){
-    if (yaku.contains('삼색동순')){
+    if (yaku.contains('삼색동각')){
       print(hand_map);
       print(yaku);
     }
