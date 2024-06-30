@@ -125,7 +125,7 @@ Sanshoku_check(Map hand_map, List<String> yaku){
 
 
 // 일기통관
-ittsu(Map hand_map, List<String> yaku){
+ittsu_check(Map hand_map, List<String> yaku){
   if (hand_map['슌츠'].length >= 3){
     int kind = 10;
     while (kind <= 30){
@@ -139,11 +139,16 @@ ittsu(Map hand_map, List<String> yaku){
       kind += 10;
     }
   }
-  
 }
 
 
 // 또이또이
+toitoi_check(Map hand_map, List<String> yaku){
+  // 멘젠처리는 상위함수에서
+  if (hand_map['슌츠'].length == 0){
+    yaku.add('또이또이');
+  }
+}
 
 
 // 산안커
