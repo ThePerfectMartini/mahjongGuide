@@ -12,6 +12,7 @@ yakuCategorizer(Map hand_map,List<int> body){
   tanyao_check(body, yaku);
   yakuHai_check(hand_map, yaku);
   Sanshoku_check(hand_map, yaku);
+  ittsu(hand_map, yaku);
   
 
   if (hand_map['멘젠']){
@@ -24,7 +25,7 @@ yakuCategorizer(Map hand_map,List<int> body){
   }
 
   if (yaku.length >= 1){
-    if (yaku.contains('삼색동각')){
+    if (yaku.contains('일기통관')){
       print(hand_map);
       print(yaku);
     }

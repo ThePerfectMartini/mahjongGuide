@@ -109,8 +109,10 @@ Sanshoku_check(Map hand_map, List<String> yaku){
       if (a && b && c){
         if (type == '슌츠'){
           yaku.add('삼색동순');
+          break;
         }else{
           yaku.add('삼색동각');
+          break;
         }
         
       }
@@ -123,6 +125,22 @@ Sanshoku_check(Map hand_map, List<String> yaku){
 
 
 // 일기통관
+ittsu(Map hand_map, List<String> yaku){
+  if (hand_map['슌츠'].length >= 3){
+    int kind = 10;
+    while (kind <= 30){
+      bool a = hand_map['슌츠'].contains(kind + 1);
+      bool b = hand_map['슌츠'].contains(kind + 4);
+      bool c = hand_map['슌츠'].contains(kind + 7);
+      if (a&&b&&c){
+        yaku.add('일기통관');
+        break;
+      }
+      kind += 10;
+    }
+  }
+  
+}
 
 
 // 또이또이
@@ -130,8 +148,6 @@ Sanshoku_check(Map hand_map, List<String> yaku){
 
 // 산안커
 
-
-// 삼색동각
 
 
 // 삼깡쯔
