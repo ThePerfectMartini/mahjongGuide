@@ -36,7 +36,7 @@ class handGenerator {
     int c = 0;
     int k = 0;
     for (int i = 0; i < 4; i++) {
-      bool first_con = (random.nextInt(100) < 80);
+      bool first_con = (random.nextInt(100) < 70);
       bool second_con = (random.nextInt(100) < 10);
       if (first_con) {
         // 80% 확률로 슌츠

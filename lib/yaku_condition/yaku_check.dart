@@ -244,6 +244,6 @@ honitsu_check(Map hand_map, List<String> yaku){
 }
 
 
-// 청일색
+// 청일색 : 혼일색에서 처리가능
 
 

@@ -9,7 +9,7 @@ var handClass = handGenerator();
 
 void main() {
   runApp(const MyApp());
-  for (int k = 0; k < 1000; k++) {
+  for (int k = 0; k < repeat; k++) {
     handClass.init();
     handClass.result_map['부수'] = buCalculator(handClass.result_map, handClass.menzen);
     yakuCategorizer(handClass.result_map, handClass.body);
@@ -17,7 +17,9 @@ void main() {
 
   // 변수 파일 하나 만들어서 거기서 변수 관리하기
   // 메인에는 앱기동에 관련한 것만 넣어놓기 
-  print(a);
+  print(prob/repeat);
+  print(longest);
+  print(longHand);
 }
 
 class MyApp extends StatelessWidget {

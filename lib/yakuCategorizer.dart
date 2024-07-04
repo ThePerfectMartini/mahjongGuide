@@ -1,4 +1,5 @@
 import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
+import 'package:flutter_mahjong_yakuguide/variable.dart';
 import 'package:flutter_mahjong_yakuguide/yaku_condition/yaku_check.dart';
 
 yakuCategorizer(Map hand_map,List<int> body){
@@ -30,12 +31,14 @@ yakuCategorizer(Map hand_map,List<int> body){
   }else{
     toitoi_check(hand_map, yaku);
   }
-
+  
   if (yaku.length >= 1){
-    if (yaku.contains('혼일색')){
-      print(hand_map);
-      print(yaku);
-    }
+    prob ++;
+    if (yaku.length > longest.length) {
+      longest = yaku;
+      longHand = hand_map;
+      }
+    
   }else{
 
   }
