@@ -9,7 +9,7 @@ var handClass = handGenerator();
 
 void main() {
   runApp(const MyApp());
-  for (int k = 0; k < 1000; k++) {
+  for (int k = 0; k < 100000; k++) {
     handClass.init();
     handClass.result_map['부수'] = buCalculator(handClass.result_map, handClass.menzen);
     yakuCategorizer(handClass.result_map, handClass.body);

@@ -204,6 +204,19 @@ honroutou_check(List<int> body, List<String> yaku){
 }
 
 // 소삼원
+shousangen_check(Map hand_map, List<String> yaku){
+  List<int> body = hand_map['커츠'] + hand_map['깡쯔'];
+  bool cond = hand_map['머리'] > 44 && body.length >= 2;
+  if (cond){
+    int count = 0;
+    for (int n in body){
+      if (n > 44) count ++;
+    }
+    if (count == 2){
+      yaku.add('소삼원');
+    }
+  }
+}
 
 
 
