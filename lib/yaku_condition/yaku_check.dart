@@ -164,6 +164,7 @@ sanankou_check(Map hand_map, List<String> yaku){
   }
 }
 
+
 // 삼깡츠
 sankanz_check(Map hand_map, List<String> yaku){
   if (hand_map['깡쯔'].length == 3){
@@ -172,11 +173,35 @@ sankanz_check(Map hand_map, List<String> yaku){
 }
 
 
-// 찬타
+// 찬타 (탕야오 그대로 가져와서 반대로 함)
+chanta_check(Map hand_map, List<String> yaku){
+  List body = hand_map['슌츠'] + hand_map['커츠'] + hand_map['깡쯔'];
+  body.add(hand_map['머리']);
+  bool chanta = true;
+  bool junchanta = true;
+  for (int n in body) {
+    if (n >= 40) junchanta = false;
+    if (!(n % 10 == 1 || n % 10 == 9 || n >= 40)) {
+      chanta = false;
+    }
+  }
+  if (chanta) {
+    if (junchanta) {yaku.add('준찬타');}
+    else {yaku.add('찬타');}
+    }
+}
 
 
 // 혼노두
-
+honroutou_check(List<int> body, List<String> yaku){
+  bool honroutou = true;
+  for (int n in body) {
+    if (!(n % 10 == 1 || n % 10 == 9 || n >= 40)) {
+      honroutou = false;
+    }
+  }
+  if (honroutou) yaku.add('혼노두');
+}
 
 // 소삼원
 
