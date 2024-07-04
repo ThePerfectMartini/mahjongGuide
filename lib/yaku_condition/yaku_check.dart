@@ -28,7 +28,7 @@ pingfu_check(Map hand_map, List<String> yaku){
   if ((hand_map['슌츠'].length == 4) && (hand_map['대기'] == '양면')) yaku.add('핑후');
 }
 
-// 이페코
+// 이페코 & 량페코
 ipeko_check(Map hand_map, List<String> yaku){
   Map<int,int> frequency = {};
 
@@ -92,7 +92,7 @@ tanyao_check(List<int> body, List<String> yaku){
 
 // 2판 역
 
-// 삼색동순, 삼색동각 체크
+// 삼색동순 & 삼색동각
 Sanshoku_check(Map hand_map, List<String> yaku){
   List<int> number = List.generate(9, (int index) => index+1);
   String type = '';
@@ -173,7 +173,7 @@ sankanz_check(Map hand_map, List<String> yaku){
 }
 
 
-// 찬타 (탕야오 그대로 가져와서 반대로 함)
+// 찬타 & 준찬타
 chanta_check(Map hand_map, List<String> yaku){
   List body = hand_map['슌츠'] + hand_map['커츠'] + hand_map['깡쯔'];
   body.add(hand_map['머리']);
@@ -203,6 +203,7 @@ honroutou_check(List<int> body, List<String> yaku){
   if (honroutou) yaku.add('혼노두');
 }
 
+
 // 소삼원
 shousangen_check(Map hand_map, List<String> yaku){
   List<int> body = hand_map['커츠'] + hand_map['깡쯔'];
@@ -226,10 +227,21 @@ shousangen_check(Map hand_map, List<String> yaku){
 // 량페코 : 이페코에서 처리가능 
 
 
-// 준찬타
+// 준찬타 : 찬타에서 처리가능
 
 
-// 혼일색
+// 혼일색 & 청일색
+honitsu_check(Map hand_map, List<String> yaku){
+  List<int> body = hand_map['슌츠'] + hand_map['커츠'] + hand_map['깡쯔'];
+  body.add(hand_map['머리']);
+  Set<int> cond = body.map((n) => n ~/ 10).toSet();
+  switch (cond.length){
+    case 1:
+      yaku.add('청일색');
+    case 2:
+      if (cond.contains(4)) yaku.add('혼일색');
+  }
+}
 
 
 // 청일색

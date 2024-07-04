@@ -18,6 +18,7 @@ yakuCategorizer(Map hand_map,List<int> body){
   honroutou_check(body, yaku);
   if (!yaku.contains('혼노두')) chanta_check(hand_map, yaku);
   shousangen_check(hand_map, yaku);
+  honitsu_check(hand_map, yaku);
   
   
 
@@ -31,7 +32,7 @@ yakuCategorizer(Map hand_map,List<int> body){
   }
 
   if (yaku.length >= 1){
-    if (yaku.contains('소삼원')){
+    if (yaku.contains('혼일색')){
       print(hand_map);
       print(yaku);
     }
