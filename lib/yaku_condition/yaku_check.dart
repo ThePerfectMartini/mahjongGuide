@@ -1,4 +1,5 @@
 import 'package:flutter_mahjong_yakuguide/variable.dart';
+import 'package:collection/collection.dart';
 
 /* 
   특수 
@@ -57,7 +58,7 @@ ipeko_check(Map hand_map, List<String> yaku){
 
 // 역패, 삼원패
 yakuHai_check(Map hand_map, List<String> yaku){
-  List<int> range = hand_map['커츠'] + hand_map['깡츠'];
+  List<int> range = hand_map['커츠'] + hand_map['깡쯔'];
   for (int n in range){
     if (n == 40 + globalWind){
       yaku.add('판풍패');
@@ -152,10 +153,23 @@ toitoi_check(Map hand_map, List<String> yaku){
 
 
 // 산안커
+sanankou_check(Map hand_map, List<String> yaku){
+  
+  var grouped = groupBy(hand_map['후로'], (int count) => count);
+  int cuz = grouped[2]?.length ?? 0;
+  int kanz = grouped[4]?.length ?? 0;
 
+  if (cuz+kanz == 3){
+    yaku.add('산안커');
+  }
+}
 
-
-// 삼깡쯔
+// 삼깡츠
+sankanz_check(Map hand_map, List<String> yaku){
+  if (hand_map['깡쯔'].length == 3){
+    yaku.add('산깡쯔');
+  }
+}
 
 
 // 찬타

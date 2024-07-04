@@ -18,7 +18,7 @@ buCalculator(Map hand_map, bool menzen){
 
 
   // Todo: 몸통별 부수 추가
-  List<int> cuzOrKanz = hand_map['커츠'] + hand_map['깡츠'];
+  List<int> cuzOrKanz = hand_map['커츠'] + hand_map['깡쯔'];
   cuzOrKanz = cuzOrKanz.reversed.toList();
   for (int i = 0; i < cuzOrKanz.length; i++){
     int baseBu = 32;

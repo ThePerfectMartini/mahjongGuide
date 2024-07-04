@@ -13,6 +13,8 @@ yakuCategorizer(Map hand_map,List<int> body){
   yakuHai_check(hand_map, yaku);
   Sanshoku_check(hand_map, yaku);
   ittsu_check(hand_map, yaku);
+  sanankou_check(hand_map, yaku);
+  sankanz_check(hand_map, yaku);
   
 
   if (hand_map['멘젠']){
@@ -25,7 +27,7 @@ yakuCategorizer(Map hand_map,List<int> body){
   }
 
   if (yaku.length >= 1){
-    if (yaku.contains('또이또이')){
+    if (yaku.contains('산깡쯔')){
       print(hand_map);
       print(yaku);
     }
