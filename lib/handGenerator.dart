@@ -1,5 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter_mahjong_yakuguide/variable.dart';
+
+import 'buCalculator.dart';
+
 class handGenerator {
   Random random = Random();
   late List<int> huro;
@@ -29,6 +33,9 @@ class handGenerator {
     ];
     tileSet();
     selectAgariTile();
+    setWind();
+
+    result_map['부수'] = buCalculator(result_map, menzen);
   }
 
   tileSet() {
@@ -117,8 +124,10 @@ class handGenerator {
     return result;
   }
 
-  menzenCheck(){
-    huro.forEach((n){if (n%2 != 0) menzen = false; });
+  menzenCheck() {
+    huro.forEach((n) {
+      if (n % 2 != 0) menzen = false;
+    });
   }
 
   selectAgariTile() {
@@ -167,5 +176,10 @@ class handGenerator {
     } else {
       result_map['화료형태'] = "론";
     }
+  }
+
+  setWind() {
+    globalWind = random.nextInt(4) + 1;
+    playerWind = random.nextInt(4) + 1;
   }
 }
