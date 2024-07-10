@@ -6,14 +6,8 @@ buCalculator(Map hand_map, bool menzen) {
   List<int> huro = hand_map['후로'];
 
   // Todo: 멤버변수 리스트
+  
 
-  // Todo: 화료 타입별 부수 추가
-  if (hand_map['화료형태'] == '쯔모') {
-    // 핑후 예외 추가할것
-    bu += 2;
-  } else if (menzen) {
-    bu += 10;
-  }
 
   // Todo: 몸통별 부수 추가
   List<int> cuzOrKanz = hand_map['커츠'] + hand_map['깡쯔'];
@@ -46,6 +40,21 @@ buCalculator(Map hand_map, bool menzen) {
   if (hand_map['대기'] == '간짱' ||
       hand_map['대기'] == '변짱' ||
       hand_map['대기'] == '단기') bu += 2;
+
+  // Todo: 화료 타입별 부수 추가 - 순서상 마지막으로 옮기기
+  if (menzen){
+    if (hand_map['화료형태'] == '론'){
+      bu += 10;
+    }else { // 멘젠 + 쯔모
+      if (bu > 20){ // 추가된 부가 있다면 +2부 -> 핑후가 성립할때만 쯔모에 부수 안붙기 때문
+        bu += 2;
+      }
+    }
+  }else{
+    if (hand_map['화료형태'] == '쯔모'){
+      bu += 2;
+    }
+  }
 
   // Todo: 리턴으로 부수 제공
   bu = (bu / 10).ceil() * 10;

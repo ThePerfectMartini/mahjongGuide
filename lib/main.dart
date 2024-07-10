@@ -16,9 +16,6 @@ void main() {
 
   // 변수 파일 하나 만들어서 거기서 변수 관리하기
   // 메인에는 앱기동에 관련한 것만 넣어놓기
-  print(prob / repeat);
-  print(longest);
-  print(longHand);
 }
 
 class MyApp extends StatelessWidget {

@@ -15,7 +15,7 @@ Map<int, String> letterMap = {
 
 int prob = 0;
 
-int repeat = 10000;
+int repeat = 1000;
 
 var longest = [];
 var longHand = {};

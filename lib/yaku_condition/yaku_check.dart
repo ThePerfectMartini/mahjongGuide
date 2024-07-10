@@ -25,7 +25,13 @@ menzentsumo_check(Map hand_map, List<String> yaku) {
 
 // 핑후
 pingfu_check(Map hand_map, List<String> yaku) {
-  if ((hand_map['슌츠'].length == 4) && (hand_map['대기'] == '양면')) yaku.add('핑후');
+  int standBu = 20;
+  if (hand_map['화료형태'] == '론'){
+    standBu = 30;
+  }
+  if (hand_map['부수'] == standBu){
+    yaku.add('핑후');
+  }
 }
 
 // 이페코 & 량페코
@@ -59,11 +65,14 @@ ipeko_check(Map hand_map, List<String> yaku) {
 // 역패, 삼원패
 yakuHai_check(Map hand_map, List<String> yaku) {
   List<int> range = hand_map['커츠'] + hand_map['깡쯔'];
+  bool pgWind = (globalWind == playerWind);
   for (int n in range) {
-    if (n == 40 + globalWind) {
-      yaku.add('판풍패 ' + letterMap[globalWind]!);
+    if (pgWind && n == 40 + globalWind){
+      yaku.add('더블 ' + letterMap[globalWind]!);
+    }else if (n == 40 + globalWind) {
+      yaku.add('판풍 ' + letterMap[globalWind]!);
     } else if (n == 40 + playerWind) {
-      yaku.add('자풍패 ' + letterMap[playerWind]!);
+      yaku.add('자풍 ' + letterMap[playerWind]!);
     } else if (n > 44) {
       yaku.add(letterMap[n - 40]!);
     }

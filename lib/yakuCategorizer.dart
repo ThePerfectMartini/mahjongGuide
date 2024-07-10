@@ -33,12 +33,13 @@ yakuCategorizer(Map hand_map,List<int> body){
   }
   
   if (yaku.length >= 1){
-    prob ++;
-    if (yaku.length > longest.length) {
-      longest = yaku;
-      longHand = hand_map;
-      }
-    
+    // print(yaku);
+    // print(hand_map);
+
+    // if (yaku.contains('더블 남')) {
+    //   print(yaku);
+    //   print(hand_map);
+    // }
   }else{
 
   }

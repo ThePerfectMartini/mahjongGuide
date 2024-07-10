@@ -12,8 +12,6 @@ class handGenerator {
 
   late Map<int, int> tiles_map;
 
-  late List<int> tiles_shunz;
-
   late Map<String, dynamic> result_map;
 
   late List<int> body;
@@ -26,11 +24,6 @@ class handGenerator {
       for (int i = 11; i <= 47; i++)
         if (i != 20 && i != 30 && i != 40) i: 4
     };
-    tiles_shunz = [
-      for (int i = 1; i <= 3; i++)
-        for (int j = 1; j <= 7; j++)
-          for (int k = 0; k < 4; k++) i * 10 + j
-    ];
     tileSet();
     selectAgariTile();
     setWind();
@@ -96,25 +89,41 @@ class handGenerator {
 
   randomTiles(int count, int type) {
     List<int> result = [];
+    
+    
     for (int i = 0; i < count; i++) {
+      List<int> availableTiles = [];
       switch (type) {
-        case 1:
-          int randomInt = random.nextInt(tiles_shunz.length);
-          int selected = tiles_shunz[randomInt];
-          for (int i = selected; i <= selected + 2; i++) {
-            tiles_shunz.remove(i);
-            tiles_map[i] = tiles_map[i]! - 1;
-            body.add(i);
-          }
-          result.add(selected);
-        default:
-          List<int> tiles = [];
-
+        case 1: // 슌츠 선택
           tiles_map.forEach((key, value) {
-            if (value >= type) tiles.add(key);
+            if ((key % 10 <= 7) && key < 40){
+              int able = value;
+              if (able > tiles_map[key + 1]!) able = tiles_map[key + 1]!;
+              if (able > tiles_map[key + 2]!) able = tiles_map[key + 2]!;
+              for (int i = able; i != 0; i--){
+                availableTiles.add(key);
+              }
+            }
           });
-          int randomInt = random.nextInt(tiles.length);
-          int selected = tiles[randomInt];
+
+          int randomInt = random.nextInt(availableTiles.length);
+          int selected = availableTiles[randomInt];
+          
+          tiles_map[selected] = tiles_map[selected]! - 1;
+          tiles_map[selected+1] = tiles_map[selected+1]! - 1;
+          tiles_map[selected+2] = tiles_map[selected+2]! - 1;
+
+          body.add(selected);
+          body.add(selected+1);
+          body.add(selected+2);
+          result.add(selected);
+
+        default: // 커츠, 깡쯔, 머리 선택
+          tiles_map.forEach((key, value) {
+            if (value >= type) availableTiles.add(key);
+          });
+          int randomInt = random.nextInt(availableTiles.length);
+          int selected = availableTiles[randomInt];
           tiles_map[selected] = tiles_map[selected]! - type;
           for (int i = 0; i < type; i++) body.add(selected);
           result.add(selected);
@@ -179,7 +188,7 @@ class handGenerator {
   }
 
   setWind() {
-    globalWind = random.nextInt(4) + 1;
+    globalWind = random.nextInt(2) + 1; // 반장전 기준
     playerWind = random.nextInt(4) + 1;
   }
 }
