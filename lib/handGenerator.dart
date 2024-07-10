@@ -16,19 +16,39 @@ class handGenerator {
 
   late List<int> body;
 
+  late List<int> doraList;
+
   init() {
     menzen = true;
     body = [];
+    doraList = [];
     result_map = {};
     tiles_map = {
       for (int i = 11; i <= 47; i++)
         if (i != 20 && i != 30 && i != 40) i: 4
     };
+    addDora();
     tileSet();
     selectAgariTile();
     setWind();
 
     result_map['부수'] = buCalculator(result_map, menzen);
+    result_map['도라표시패'] = doraList;
+  }
+
+  addDora(){
+    doraList.add(tiles_map.keys.toList()[random.nextInt(tiles_map.keys.length)]);
+    int dora = doraList.last;
+    if (dora % 10 == 9){
+        int n = (dora~/10)*10+1;
+        tiles_map[n] = tiles_map[n]! - 1;
+    }else if (dora == 44){
+      tiles_map[41] = tiles_map[41]! - 1;
+    }else if (dora == 47){
+      tiles_map[45] = tiles_map[45]! - 1;
+    }else {
+      tiles_map[dora+1] = tiles_map[dora+1]! - 1;
+    }
   }
 
   tileSet() {
@@ -127,6 +147,7 @@ class handGenerator {
           tiles_map[selected] = tiles_map[selected]! - type;
           for (int i = 0; i < type; i++) body.add(selected);
           result.add(selected);
+          if (type == 4) addDora();
       }
     }
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mahjong_yakuguide/buCalculator.dart';
 import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
 import 'package:flutter_mahjong_yakuguide/variable.dart';
 import 'package:flutter_mahjong_yakuguide/yakuCategorizer.dart';
-import 'handGenerator.dart';
 
 var handClass = handGenerator();
 

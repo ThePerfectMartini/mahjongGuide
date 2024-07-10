@@ -15,6 +15,23 @@ import 'package:collection/collection.dart';
 */
 
 // 1판역
+dora_check(List<int> body,List<int> doraList, List<String> yaku) {
+  int doraCount = 0;
+  for (int dora in doraList){
+    for (int i in body){
+      if (i == dora+1){
+        doraCount ++;
+      }
+    }
+  }
+  if (doraCount != 0){
+    yaku.add('도라 $doraCount');
+  }
+}
+uraDora_check(List<int> body,List<int> doraList, List<String> yaku) {
+  
+  int uraDoraCount = 0;
+}
 
 // ** 리치 : TODOS : 현재는 멘젠 판정만 함
 
@@ -68,11 +85,11 @@ yakuHai_check(Map hand_map, List<String> yaku) {
   bool pgWind = (globalWind == playerWind);
   for (int n in range) {
     if (pgWind && n == 40 + globalWind){
-      yaku.add('더블 ' + letterMap[globalWind]!);
+      yaku.add('더블 ' + letterMap[n - 40]!);
     }else if (n == 40 + globalWind) {
-      yaku.add('판풍 ' + letterMap[globalWind]!);
+      yaku.add('판풍 ' + letterMap[n - 40]!);
     } else if (n == 40 + playerWind) {
-      yaku.add('자풍 ' + letterMap[playerWind]!);
+      yaku.add('자풍 ' + letterMap[n - 40]!);
     } else if (n > 44) {
       yaku.add(letterMap[n - 40]!);
     }
