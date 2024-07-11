@@ -15,22 +15,29 @@ import 'package:collection/collection.dart';
 */
 
 // 1판역
-dora_check(List<int> body,List<int> doraList, List<String> yaku) {
+riichi(List<int> body, Map hand_map, yaku) {
+  if (hand_map['멘젠']) {
+    yaku.add('리치');
+    dora_check(body, hand_map['우라도라표시패'], true, yaku);
+  }
+}
+
+dora_check(List<int> body, List<int> doraList, bool ura, List<String> yaku) {
   int doraCount = 0;
-  for (int dora in doraList){
-    for (int i in body){
-      if (i == dora+1){
-        doraCount ++;
+  for (int dora in doraList) {
+    for (int i in body) {
+      if (i == dora + 1) {
+        doraCount++;
       }
     }
   }
-  if (doraCount != 0){
-    yaku.add('도라 $doraCount');
+  if (doraCount != 0) {
+    if (ura) {
+      yaku.add('뒷 도라 $doraCount');
+    } else {
+      yaku.add('도라 $doraCount');
+    }
   }
-}
-uraDora_check(List<int> body,List<int> doraList, List<String> yaku) {
-  
-  int uraDoraCount = 0;
 }
 
 // ** 리치 : TODOS : 현재는 멘젠 판정만 함
@@ -43,10 +50,10 @@ menzentsumo_check(Map hand_map, List<String> yaku) {
 // 핑후
 pingfu_check(Map hand_map, List<String> yaku) {
   int standBu = 20;
-  if (hand_map['화료형태'] == '론'){
+  if (hand_map['화료형태'] == '론') {
     standBu = 30;
   }
-  if (hand_map['부수'] == standBu){
+  if (hand_map['부수'] == standBu) {
     yaku.add('핑후');
   }
 }
@@ -84,9 +91,9 @@ yakuHai_check(Map hand_map, List<String> yaku) {
   List<int> range = hand_map['커츠'] + hand_map['깡쯔'];
   bool pgWind = (globalWind == playerWind);
   for (int n in range) {
-    if (pgWind && n == 40 + globalWind){
+    if (pgWind && n == 40 + globalWind) {
       yaku.add('더블 ' + letterMap[n - 40]!);
-    }else if (n == 40 + globalWind) {
+    } else if (n == 40 + globalWind) {
       yaku.add('판풍 ' + letterMap[n - 40]!);
     } else if (n == 40 + playerWind) {
       yaku.add('자풍 ' + letterMap[n - 40]!);

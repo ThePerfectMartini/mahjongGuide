@@ -17,11 +17,13 @@ class handGenerator {
   late List<int> body;
 
   late List<int> doraList;
+  late List<int> uraDoraList;
 
   init() {
     menzen = true;
     body = [];
     doraList = [];
+    uraDoraList = [];
     result_map = {};
     tiles_map = {
       for (int i = 11; i <= 47; i++)
@@ -34,20 +36,36 @@ class handGenerator {
 
     result_map['부수'] = buCalculator(result_map, menzen);
     result_map['도라표시패'] = doraList;
+    result_map['우라도라표시패'] = uraDoraList;
   }
 
-  addDora(){
-    doraList.add(tiles_map.keys.toList()[random.nextInt(tiles_map.keys.length)]);
+  addDora() {
+    doraList
+        .add(tiles_map.keys.toList()[random.nextInt(tiles_map.keys.length)]);
     int dora = doraList.last;
-    if (dora % 10 == 9){
-        int n = (dora~/10)*10+1;
-        tiles_map[n] = tiles_map[n]! - 1;
-    }else if (dora == 44){
+    if (dora % 10 == 9) {
+      int n = (dora ~/ 10) * 10 + 1;
+      tiles_map[n] = tiles_map[n]! - 1;
+    } else if (dora == 44) {
       tiles_map[41] = tiles_map[41]! - 1;
-    }else if (dora == 47){
+    } else if (dora == 47) {
       tiles_map[45] = tiles_map[45]! - 1;
-    }else {
-      tiles_map[dora+1] = tiles_map[dora+1]! - 1;
+    } else {
+      tiles_map[dora + 1] = tiles_map[dora + 1]! - 1;
+    }
+
+    uraDoraList
+        .add(tiles_map.keys.toList()[random.nextInt(tiles_map.keys.length)]);
+    int uraDora = uraDoraList.last;
+    if (uraDora % 10 == 9) {
+      int n = (uraDora ~/ 10) * 10 + 1;
+      tiles_map[n] = tiles_map[n]! - 1;
+    } else if (uraDora == 44) {
+      tiles_map[41] = tiles_map[41]! - 1;
+    } else if (uraDora == 47) {
+      tiles_map[45] = tiles_map[45]! - 1;
+    } else {
+      tiles_map[uraDora + 1] = tiles_map[uraDora + 1]! - 1;
     }
   }
 
@@ -109,18 +127,17 @@ class handGenerator {
 
   randomTiles(int count, int type) {
     List<int> result = [];
-    
-    
+
     for (int i = 0; i < count; i++) {
       List<int> availableTiles = [];
       switch (type) {
         case 1: // 슌츠 선택
           tiles_map.forEach((key, value) {
-            if ((key % 10 <= 7) && key < 40){
+            if ((key % 10 <= 7) && key < 40) {
               int able = value;
               if (able > tiles_map[key + 1]!) able = tiles_map[key + 1]!;
               if (able > tiles_map[key + 2]!) able = tiles_map[key + 2]!;
-              for (int i = able; i != 0; i--){
+              for (int i = able; i != 0; i--) {
                 availableTiles.add(key);
               }
             }
@@ -128,14 +145,14 @@ class handGenerator {
 
           int randomInt = random.nextInt(availableTiles.length);
           int selected = availableTiles[randomInt];
-          
+
           tiles_map[selected] = tiles_map[selected]! - 1;
-          tiles_map[selected+1] = tiles_map[selected+1]! - 1;
-          tiles_map[selected+2] = tiles_map[selected+2]! - 1;
+          tiles_map[selected + 1] = tiles_map[selected + 1]! - 1;
+          tiles_map[selected + 2] = tiles_map[selected + 2]! - 1;
 
           body.add(selected);
-          body.add(selected+1);
-          body.add(selected+2);
+          body.add(selected + 1);
+          body.add(selected + 2);
           result.add(selected);
 
         default: // 커츠, 깡쯔, 머리 선택

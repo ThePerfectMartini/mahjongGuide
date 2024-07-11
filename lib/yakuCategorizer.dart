@@ -1,14 +1,13 @@
 import 'package:flutter_mahjong_yakuguide/yaku_condition/yaku_check.dart';
 
-yakuCategorizer(Map hand_map,List<int> body){
-
+yakuCategorizer(Map hand_map, List<int> body) {
   // todos: 역별로 파일 분리
 
   // todos: 주석 잘 달아서 정리하기.
 
   List<String> yaku = [];
 
-  dora_check(body, hand_map['도라표시패'], yaku);
+  dora_check(body, hand_map['도라표시패'], false, yaku);
 
   tanyao_check(body, yaku);
   yakuHai_check(hand_map, yaku);
@@ -20,32 +19,23 @@ yakuCategorizer(Map hand_map,List<int> body){
   if (!yaku.contains('혼노두')) chanta_check(hand_map, yaku);
   shousangen_check(hand_map, yaku);
   honitsu_check(hand_map, yaku);
-  
-  
 
-  if (hand_map['멘젠']){
+  if (hand_map['멘젠']) {
+    riichi(body, hand_map, yaku);
     menzentsumo_check(hand_map, yaku);
     pingfu_check(hand_map, yaku);
     ipeko_check(hand_map, yaku);
-    
-  }else{
+  } else {
     toitoi_check(hand_map, yaku);
   }
-  
-  if (yaku.isNotEmpty){
-    // print(yaku);
-    // print(hand_map);
+
+  if (yaku.length > 0) {
+    print(yaku);
+    print(hand_map);
 
     // if (yaku.contains('도라')) {
     //   print(yaku);
     //   print(hand_map);
     // }
-    if (hand_map['도라표시패'].length > 2) {
-      print(yaku);
-      print(hand_map);
-    }
-  }else{
-
-  }
-
+  } else {}
 }
