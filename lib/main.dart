@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mahjong_yakuguide/handClass.dart';
 import 'package:flutter_mahjong_yakuguide/handGenerator.dart';
+import 'package:flutter_mahjong_yakuguide/tiles.dart';
 import 'package:flutter_mahjong_yakuguide/variable.dart';
-import 'package:flutter_mahjong_yakuguide/yakuCategorizer.dart';
+import 'package:flutter_mahjong_yakuguide/yaku_condition/yakuCategorizer.dart';
 
-var handClass = handGenerator();
 
 void main() {
   runApp(const MyApp());
-  for (int k = 0; k < repeat; k++) {
-    handClass.init();
-    yakuCategorizer(handClass.result_map, handClass.body);
+
+  for (int i = 0; i < 10; i++){
+    handInfo hand = handInfo();
+    categorizer(hand);
+    if (hand.yaku.isNotEmpty) hand.testPrint();
+    
   }
+  
+
+  
+  
+  print('done');
 
   // 변수 파일 하나 만들어서 거기서 변수 관리하기
   // 메인에는 앱기동에 관련한 것만 넣어놓기
@@ -46,8 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    handClass.init();
-
     setState(() {
       _counter++;
     });

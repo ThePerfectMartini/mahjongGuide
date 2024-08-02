@@ -1,6 +1,3 @@
-int globalWind = 1;
-int playerWind = 2;
-
 Map<int, String> letterMap = {
   1: "동",
   2: "남",
@@ -13,7 +10,7 @@ Map<int, String> letterMap = {
 
 int prob = 0;
 
-int repeat = 1000;
+int repeat = 1;
 
 var longest = [];
 var longHand = {};

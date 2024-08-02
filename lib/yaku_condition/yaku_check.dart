@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter_mahjong_yakuguide/handClass.dart';
 import 'package:flutter_mahjong_yakuguide/variable.dart';
 import 'package:collection/collection.dart';
 
@@ -13,223 +16,208 @@ import 'package:collection/collection.dart';
     치또이츠
 
 */
-
+Random random = Random();
 // 1판역
-riichi(List<int> body, Map hand_map, yaku) {
-  if (hand_map['멘젠']) {
-    yaku.add('리치');
-    dora_check(body, hand_map['우라도라표시패'], true, yaku);
-  }
+riichi(handInfo hand) {
+  if (random.nextBool()) hand.yaku.add('리치');
 }
 
-dora_check(List<int> body, List<int> doraList, bool ura, List<String> yaku) {
-  int doraCount = 0;
-  for (int dora in doraList) {
-    for (int i in body) {
-      if (i == dora + 1) {
-        doraCount++;
-      }
+dora_check(handInfo hand) {
+  int dora = 0;
+  int uraDora = 0;
+  for (int i = 0; i <= hand.kanCount; i++){
+    if (i == 4) continue;
+    int target = hand.dora[i] + 1;
+    dora += hand.body.where((n) => n == target).length;
+    if (hand.yaku.contains('리치')){
+      int targetUra = hand.dora[i+4] + 1;
+      uraDora += hand.body.where((n) => n == targetUra).length;
     }
   }
-  if (doraCount != 0) {
-    if (ura) {
-      yaku.add('뒷 도라 $doraCount');
-    } else {
-      yaku.add('도라 $doraCount');
-    }
-  }
+  if (dora != 0) hand.yaku.add('도라 $dora');
+  if (uraDora != 0) hand.yaku.add('뒷도라 $uraDora');
 }
 
 // ** 리치 : TODOS : 현재는 멘젠 판정만 함
 
 // 멘젠 쯔모
-menzentsumo_check(Map hand_map, List<String> yaku) {
-  if (hand_map['화료형태'] == '쯔모') yaku.add('멘젠쯔모');
+menzentsumo_check(handInfo hand) {
+  if (hand.agariType) hand.yaku.add('멘젠쯔모');
 }
 
 // 핑후
-pingfu_check(Map hand_map, List<String> yaku) {
-  int standBu = 20;
-  if (hand_map['화료형태'] == '론') {
-    standBu = 30;
-  }
-  if (hand_map['부수'] == standBu) {
-    yaku.add('핑후');
+pingfu_check(handInfo hand) {
+  if (hand.bu == 20){
+    hand.yaku.add('핑후');
+  }else if (hand.bu == 30 && !hand.agariType){
+    hand.yaku.add('핑후');
   }
 }
 
 // 이페코 & 량페코
-ipeko_check(Map hand_map, List<String> yaku) {
-  Map<int, int> frequency = {};
-
-  int ipekoCount = 0;
-
-  for (int n in hand_map['슌츠']) {
-    if (frequency.containsKey(n)) {
-      frequency[n] = frequency[n]! + 1;
-    } else {
-      frequency[n] = 1;
+ipeko_check(handInfo hand) {
+  List<int> shunList = hand.getShunNumbers();
+  Set<int> shunSet = shunList.toSet();
+  if (shunList.length > 1){ // 슌츠가 1개인 조합은 걸러짐
+    switch (shunList.length - shunSet.length){
+      case 1:
+        hand.yaku.add('이페코');
+      case 2:
+        for (int i in shunSet){
+          shunList.remove(i);
+        }
+        if (shunList.toSet().length == 2){
+          hand.yaku.add('량페코');
+        }else{
+          hand.yaku.add('이페코(특수)'); // 커쯔 3개로 쓰는게 나을수도 있음
+        }
+        
+      case 3:
+        hand.yaku.add('량페코(특수)'); // 규격외..
     }
-  }
-
-  frequency.forEach((key, value) {
-    if (value >= 2) {
-      ipekoCount++;
-    }
-  });
-
-  switch (ipekoCount) {
-    case 1:
-      yaku.add('이페코');
-    case 2:
-      yaku.add('량페코');
   }
 }
 
 // 역패, 삼원패
-yakuHai_check(Map hand_map, List<String> yaku) {
-  List<int> range = hand_map['커츠'] + hand_map['깡쯔'];
-  bool pgWind = (globalWind == playerWind);
-  for (int n in range) {
-    if (pgWind && n == 40 + globalWind) {
-      yaku.add('더블 ' + letterMap[n - 40]!);
-    } else if (n == 40 + globalWind) {
-      yaku.add('판풍 ' + letterMap[n - 40]!);
-    } else if (n == 40 + playerWind) {
-      yaku.add('자풍 ' + letterMap[n - 40]!);
-    } else if (n > 44) {
-      yaku.add(letterMap[n - 40]!);
+yakuHai_check(handInfo hand) {
+  List<int> jOnly = hand.getFirstNumbers().where((int i) => i > 40).toList();
+  bool pgWind = (hand.globalWind == hand.playerWind);
+  for (int i in jOnly) {
+    int n = i - 40;
+    if (pgWind && n == hand.globalWind) {
+      hand.yaku.add('더블 ' + letterMap[n]!);
+    } else if (n == hand.globalWind) {
+      hand.yaku.add('판풍 ' + letterMap[n]!);
+    } else if (n == hand.playerWind) {
+      hand.yaku.add('자풍 ' + letterMap[n]!);
+    } else if (n > 4) {
+      hand.yaku.add(letterMap[n]!);
     }
   }
 }
 
 // 탕야오
-tanyao_check(List<int> body, List<String> yaku) {
-  bool tanyao = true;
-  for (int n in body) {
-    if (n % 10 == 1 || n % 10 == 9 || n >= 40) {
-      tanyao = false;
-    }
+tanyao_check(handInfo hand) {
+  if (!hand.body.any((int n) => n % 10 == 1 || n % 10 == 9 || n > 40)){
+    hand.yaku.add('탕야오');
   }
-  if (tanyao) yaku.add('탕야오');
+
+
 }
 
 // 2판 역
 
 // 삼색동순 & 삼색동각
-Sanshoku_check(Map hand_map, List<String> yaku) {
-  List<int> number = List.generate(9, (int index) => index + 1);
-  String type = '';
+sanshoku_check(handInfo hand) {
+  List<int> list = hand.getShunNumbers();
+  if (list.length == 2) return;
 
-  if (hand_map['슌츠'].length >= 3) {
-    type = '슌츠';
-  } else if (hand_map['커츠'].length >= 3) {
-    type = '커츠';
+  String yakuName = '삼색동순';
+  
+  if (list.length < 2){
+    yakuName = '삼색동각';
+    list = hand.getFirstNumbers();
   }
-  if (type != '') {
-    for (int i in number) {
-      bool a = hand_map[type].contains(10 + i);
-      bool b = hand_map[type].contains(20 + i);
-      bool c = hand_map[type].contains(30 + i);
-      if (a && b && c) {
-        if (type == '슌츠') {
-          yaku.add('삼색동순');
-          break;
-        } else {
-          yaku.add('삼색동각');
-          break;
-        }
-      }
+
+  for (int i = 11; i < 20; i+=1){
+    if ([i,i+10,i+20].every((e) => list.contains(e))){
+      hand.yaku.add(yakuName);
+      return;
     }
   }
 }
 
 // 일기통관
-ittsu_check(Map hand_map, List<String> yaku) {
-  if (hand_map['슌츠'].length >= 3) {
-    int kind = 10;
-    while (kind <= 30) {
-      bool a = hand_map['슌츠'].contains(kind + 1);
-      bool b = hand_map['슌츠'].contains(kind + 4);
-      bool c = hand_map['슌츠'].contains(kind + 7);
-      if (a && b && c) {
-        yaku.add('일기통관');
-        break;
-      }
-      kind += 10;
+ittsu_check(handInfo hand) {
+  List<int> shunList = hand.getShunNumbers();
+
+  for (int i = 10; i < 40; i+=10){
+    if ([i+1,i+4,i+7].every((e) => shunList.contains(e))){
+      hand.yaku.add('일기통관');
+      return;
     }
   }
 }
 
 // 또이또이
-toitoi_check(Map hand_map, List<String> yaku) {
+toitoi_check(handInfo hand) {
   // 멘젠처리는 상위함수에서
-  if (hand_map['슌츠'].length == 0) {
-    yaku.add('또이또이');
+  if (!hand.huro.any((e) => e < 2)) {
+    hand.yaku.add('또이또이');
   }
 }
 
 // 산안커
-sanankou_check(Map hand_map, List<String> yaku) {
-  var grouped = groupBy(hand_map['후로'], (int count) => count);
-  int cuz = grouped[2]?.length ?? 0;
-  int kanz = grouped[4]?.length ?? 0;
-
-  if (cuz + kanz == 3) {
-    yaku.add('산안커');
-  }
-}
-
-// 삼깡츠
-sankanz_check(Map hand_map, List<String> yaku) {
-  if (hand_map['깡쯔'].length == 3) {
-    yaku.add('산깡쯔');
-  }
-}
-
-// 찬타 & 준찬타
-chanta_check(Map hand_map, List<String> yaku) {
-  List body = hand_map['슌츠'] + hand_map['커츠'] + hand_map['깡쯔'];
-  body.add(hand_map['머리']);
-  bool chanta = true;
-  bool junchanta = true;
-  for (int n in body) {
-    if (n >= 40) junchanta = false;
-    if (!(n % 10 == 1 || n % 10 == 9 || n >= 40)) {
-      chanta = false;
-    }
-  }
-  if (chanta) {
-    if (junchanta) {
-      yaku.add('준찬타');
-    } else {
-      yaku.add('찬타');
+sanankou_check(handInfo hand) {
+  int count = hand.huro.where((e) => e == 2 || e == 4).length;
+  if (count == 3){
+    if (hand.agariType){
+      hand.yaku.add('산안커');
+    }else if(hand.machiType != '샤보'){
+      hand.yaku.add('산안커');
     }
   }
 }
 
-// 혼노두
-honroutou_check(List<int> body, List<String> yaku) {
-  bool honroutou = true;
-  for (int n in body) {
-    if (!(n % 10 == 1 || n % 10 == 9 || n >= 40)) {
-      honroutou = false;
+// 산깡쯔
+sankanz_check(handInfo hand) {
+  int count = hand.huro.where((e) => e >= 4).length;
+  if (count == 3) {
+    hand.yaku.add('산깡쯔');
+  }
+}
+
+// 찬타 & 준찬타 & 혼노두 & 청노두
+chanta_check(handInfo hand) {
+  int counter = 2;
+  List<int> filtered = hand.body.where((n) => n > 40 || n % 10 == 1 || n % 10 == 9).toList();
+  if (filtered.length == hand.body.length){
+    // 혼노두 or 청노두
+    if (filtered.any((n) => n > 40)){
+      hand.yaku.add('혼노두');
+    }else{
+      hand.yaku.add('청노두');
+    }
+    return;
+  }
+  for (int i in hand.huro){
+    switch (i){
+      case 2:
+        counter += 3;
+      case 3:
+        counter += 3;
+      case 4:
+        counter += 4;
+      case 5:
+        counter += 4;
+      default:
+        counter ++;
     }
   }
-  if (honroutou) yaku.add('혼노두');
+  if (filtered.length == counter){
+    if (filtered.any((n) => n > 40)){
+      hand.yaku.add('찬타');
+    }else{
+      hand.yaku.add('준찬타');
+    }
+    
+  }
 }
+
 
 // 소삼원
-shousangen_check(Map hand_map, List<String> yaku) {
-  List<int> body = hand_map['커츠'] + hand_map['깡쯔'];
-  bool cond = hand_map['머리'] > 44 && body.length >= 2;
-  if (cond) {
-    int count = 0;
-    for (int n in body) {
-      if (n > 44) count++;
-    }
-    if (count == 2) {
-      yaku.add('소삼원');
+shousangen_check(handInfo hand) {
+  int head = hand.getHeadNumber();
+  List<String> container = ['백','발','중'];
+  if (container.every((e) => hand.yaku.contains(e))){
+      hand.yaku.add('대삼원');
+      return;
+  }
+
+  if (head > 44){
+    container.remove(letterMap[head-40]);
+    if (container.every((e) => hand.yaku.contains(e))){
+      hand.yaku.add('소삼원');
     }
   }
 }
@@ -241,15 +229,16 @@ shousangen_check(Map hand_map, List<String> yaku) {
 // 준찬타 : 찬타에서 처리가능
 
 // 혼일색 & 청일색
-honitsu_check(Map hand_map, List<String> yaku) {
-  List<int> body = hand_map['슌츠'] + hand_map['커츠'] + hand_map['깡쯔'];
-  body.add(hand_map['머리']);
-  Set<int> cond = body.map((n) => n ~/ 10).toSet();
+honitsu_check(handInfo hand) {
+  List<int> nums = hand.getFirstNumbers();
+  nums.add(hand.getHeadNumber());
+  
+  Set<int> cond = nums.map((n) => n ~/ 10).toSet();
   switch (cond.length) {
     case 1:
-      yaku.add('청일색');
+      if(cond.first != 4) hand.yaku.add('청일색');
     case 2:
-      if (cond.contains(4)) yaku.add('혼일색');
+      if (cond.contains(4)) hand.yaku.add('혼일색');
   }
 }
 
