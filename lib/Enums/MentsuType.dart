@@ -2,16 +2,17 @@ import 'package:flutter_mahjong_yakuguide/Mentsu.dart';
 import 'package:flutter_mahjong_yakuguide/Utilities/NumberSelector.dart';
 
 enum MentsuType {
-  Head,
   Shuntsu,
   Koutsu,
-  Kantsu;
+  Kantsu,
+  Head;
 
   Mentsu toMentsu(NumberSelector NS, int gameWind, int playerWind) {
     Mentsu output;
     switch (this) {
       case MentsuType.Head:
         output = Mentsu(NS.pickRandomNumber(2), this, gameWind, playerWind);
+        output.isCalled = false;
       case MentsuType.Shuntsu:
         output = Mentsu(NS.pickRandomNumberSequence(), this);
       case MentsuType.Koutsu:

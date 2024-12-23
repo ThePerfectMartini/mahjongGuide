@@ -16,11 +16,12 @@ void main() {
   QuizFactory quizFactory = QuizFactory();
   HandInfo a = quizFactory.generateHandInfo();
   for (int i = 0; i < 100; i++) {
-    if (a.isOnlySimple) {
-      test(a);
-      print(i);
+    if (a.yaku.yaku.isNotEmpty){
       break;
+    }else{
+      a = quizFactory.generateHandInfo();
     }
-    a = quizFactory.generateHandInfo();
   }
+  test(a);
+  print(a.yaku.yaku);
 }

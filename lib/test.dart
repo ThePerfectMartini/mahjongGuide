@@ -26,14 +26,3 @@ void test(HandInfo info) {
   print(info.fu);
 }
 
-bool testCond(HandInfo info) {
-  if (info.isMenzen) {
-    if ((info.isTsumo && info.fu == 20) || (!info.isTsumo && info.fu == 30)) {
-      test(info);
-      print('핑후');
-      return true;
-    }
-  }
-
-  return false;
-}

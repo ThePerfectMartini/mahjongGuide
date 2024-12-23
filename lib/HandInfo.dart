@@ -1,8 +1,10 @@
 import 'package:flutter_mahjong_yakuguide/Enums/MachiType.dart';
 import 'package:flutter_mahjong_yakuguide/Enums/MentsuType.dart';
+import 'package:flutter_mahjong_yakuguide/Enums/TileType.dart';
 import 'package:flutter_mahjong_yakuguide/Mentsu.dart';
 import 'package:flutter_mahjong_yakuguide/Utilities/NumberSelector.dart';
 import 'package:flutter_mahjong_yakuguide/Utilities/Utils.dart';
+import 'package:flutter_mahjong_yakuguide/Yaku/Yaku.dart';
 
 class HandInfo {
   late Mentsu machi;
@@ -12,13 +14,13 @@ class HandInfo {
   late bool isMenzen;
   int fu = 20;
 
+  late YakuStatus yaku;
+
   bool isTsumo = Utils().random.nextBool();
   int gameWind = Utils().random.nextInt(4) + 1;
   int playerWind = Utils().random.nextInt(4) + 1;
 
   int steak = Utils().random.nextInt(4);
-
-  bool isOnlySimple = true;
 
   HandInfo(NumberSelector NS, List<MentsuType> mold) {
     machi = mold.removeAt(0).toMachi(NS, gameWind, playerWind);
@@ -28,7 +30,8 @@ class HandInfo {
     isMenzen = !hand.any((i) => i.isCalled);
 
     _sumAllFu();
-    _setConditions();
+
+    yaku = YakuStatus(this);
   }
 
   MachiType _pickMachiType() {
@@ -37,7 +40,7 @@ class HandInfo {
         return MachiType.Tanki;
       case MentsuType.Shuntsu:
         List<MachiType> picks = [MachiType.Kanchan];
-        if (machi.isSimple) {
+        if (machi.tileType == TileType.Simple) {
           picks.add(MachiType.RyanmenFront);
           picks.add(MachiType.RyanmenBack);
         } else if (machi.tileNumber == 1) {
@@ -78,11 +81,5 @@ class HandInfo {
     }
 
     fu = ((fu + 9) ~/ 10) * 10;
-  }
-
-  void _setConditions() {
-    ([machi] + hand).forEach((item) {
-      if (item.isHonor) isOnlySimple = false;
-    });
   }
 }

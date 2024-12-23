@@ -1,4 +1,5 @@
 import 'package:flutter_mahjong_yakuguide/Enums/MentsuType.dart';
+import 'package:flutter_mahjong_yakuguide/Enums/TileType.dart';
 import 'package:flutter_mahjong_yakuguide/Utilities/Utils.dart';
 
 class Mentsu {
@@ -10,9 +11,7 @@ class Mentsu {
   int fu = 0;
   bool isCalled = false;
 
-  bool isSimple = false;
-  bool isTerminal = false;
-  bool isHonor = false;
+  late final TileType tileType;
 
   bool isDragon = false;
   bool isGameWind = false;
@@ -27,16 +26,16 @@ class Mentsu {
 
   void _checkTileType(int gWind, int pWind) {
     if (tilekind == 4) {
-      isHonor = true;
+      tileType = TileType.Honor;
       if (tileNumber > 4) isDragon = true;
       if (tileNumber == gWind) isGameWind = true;
       if (tileNumber == pWind) isPlayerWind = true;
     } else if (tileNumber == 1 || tileNumber == 9) {
-      isTerminal = true;
+      tileType = TileType.Terminal;
     } else if (type == MentsuType.Shuntsu && tileNumber == 7) {
-      isTerminal = true;
+      tileType = TileType.Terminal;
     } else {
-      isSimple = true;
+      tileType = TileType.Simple;
     }
   }
 
@@ -56,7 +55,7 @@ class Mentsu {
         fu = 32;
     }
 
-    if (isSimple) fu ~/= 2;
+    if (tileType == TileType.Simple) fu ~/= 2;
     if (isCalled) fu ~/= 2;
 
     return fu;
