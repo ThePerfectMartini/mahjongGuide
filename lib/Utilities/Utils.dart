@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:mjg/Enums/MentsuType.dart';
-import 'package:mjg/probabilityManager.dart';
+import 'package:flutter_mahjong_yakuguide/Enums/MentsuType.dart';
+import 'package:flutter_mahjong_yakuguide/probabilityManager.dart';
 
 class Utils {
   final Random random = Random();

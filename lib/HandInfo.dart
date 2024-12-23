@@ -1,8 +1,8 @@
-import 'package:mjg/Enums/MachiType.dart';
-import 'package:mjg/Enums/MentsuType.dart';
-import 'package:mjg/Mentsu.dart';
-import 'package:mjg/Utilities/NumberSelector.dart';
-import 'package:mjg/Utilities/Utils.dart';
+import 'package:flutter_mahjong_yakuguide/Enums/MachiType.dart';
+import 'package:flutter_mahjong_yakuguide/Enums/MentsuType.dart';
+import 'package:flutter_mahjong_yakuguide/Mentsu.dart';
+import 'package:flutter_mahjong_yakuguide/Utilities/NumberSelector.dart';
+import 'package:flutter_mahjong_yakuguide/Utilities/Utils.dart';
 
 class HandInfo {
   late Mentsu machi;

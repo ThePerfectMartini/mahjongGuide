@@ -1,6 +1,6 @@
-import 'package:mjg/Enums/MentsuType.dart';
-import 'package:mjg/HandInfo.dart';
-import 'package:mjg/Mentsu.dart';
+import 'package:flutter_mahjong_yakuguide/Enums/MentsuType.dart';
+import 'package:flutter_mahjong_yakuguide/HandInfo.dart';
+import 'package:flutter_mahjong_yakuguide/Mentsu.dart';
 
 void test(HandInfo info) {
   List<int> inHand = info.machi.getNumbers();

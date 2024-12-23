@@ -1,4 +1,4 @@
-import 'package:mjg/Utilities/Utils.dart';
+import 'package:flutter_mahjong_yakuguide/Utilities/Utils.dart';
 
 class NumberSelector {
   final Map<int, int> _numberMap;

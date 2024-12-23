@@ -1,8 +1,8 @@
-import 'package:mjg/HandMold.dart';
-import 'package:mjg/Utilities/NumberSelector.dart';
-import 'package:mjg/HandInfo.dart';
+import 'package:flutter_mahjong_yakuguide/HandInfo.dart';
+import 'package:flutter_mahjong_yakuguide/HandMold.dart';
+import 'package:flutter_mahjong_yakuguide/Utilities/NumberSelector.dart';
 
-import 'package:mjg/test.dart';
+import 'package:flutter_mahjong_yakuguide/test.dart';
 
 class QuizFactory {
   HandMold HM = HandMold();

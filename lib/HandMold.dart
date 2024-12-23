@@ -1,5 +1,5 @@
-import 'package:mjg/Enums/MentsuType.dart';
-import 'package:mjg/Utilities/Utils.dart';
+import 'package:flutter_mahjong_yakuguide/Enums/MentsuType.dart';
+import 'package:flutter_mahjong_yakuguide/Utilities/Utils.dart';
 
 class HandMold {
   List<MentsuType> generate() {

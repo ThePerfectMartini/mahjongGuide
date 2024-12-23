@@ -1,5 +1,5 @@
-import 'package:mjg/Mentsu.dart';
-import 'package:mjg/Utilities/NumberSelector.dart';
+import 'package:flutter_mahjong_yakuguide/Mentsu.dart';
+import 'package:flutter_mahjong_yakuguide/Utilities/NumberSelector.dart';
 
 enum MentsuType {
   Head,
