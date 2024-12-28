@@ -5,7 +5,7 @@ import 'package:flutter_mahjong_yakuguide/Utilities/Utils.dart';
 class Mentsu {
   final int number;
   final MentsuType type;
-  late final int tilekind;
+  late final int tileKind;
   late final int tileNumber;
 
   int fu = 0;
@@ -18,14 +18,14 @@ class Mentsu {
   bool isPlayerWind = false;
 
   Mentsu(this.number, this.type, [int gameWind = 0, int playerWind = 0]) {
-    tilekind = number ~/ 10;
+    tileKind = number ~/ 10;
     tileNumber = number % 10;
     isCalled = Utils().pickRandomHuro();
     _checkTileType(gameWind, playerWind);
   }
 
   void _checkTileType(int gWind, int pWind) {
-    if (tilekind == 4) {
+    if (tileKind == 4) {
       tileType = TileType.Honor;
       if (tileNumber > 4) isDragon = true;
       if (tileNumber == gWind) isGameWind = true;
