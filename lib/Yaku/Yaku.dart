@@ -34,6 +34,7 @@ class YakuStatus {
     _tileTypeRelated();
     _kindRelated();
     _numberRelated();
+    _dora(info);
   }
 
   void _analyzeConditions(HandInfo info) {
@@ -180,6 +181,37 @@ class YakuStatus {
       if (i == 45) yaku.add('백');
       if (i == 46) yaku.add('발');
       if (i == 47) yaku.add('중');
+    }
+  }
+
+  void _dora(HandInfo info) {
+    int doraCount = 0;
+    List<int> hand = [];
+    for (Mentsu i in allHand) {
+      hand.addAll(i.getNumbers());
+    }
+    for (int i = 0; i < kantsuCount; i++) {
+      int doraNumber = info.dora[i];
+      switch (doraNumber) {
+        case 19:
+          doraNumber = 11;
+        case 29:
+          doraNumber = 21;
+        case 39:
+          doraNumber = 31;
+        case 44:
+          doraNumber = 41;
+        case 47:
+          doraNumber = 45;
+        default:
+          doraNumber++;
+      }
+      doraCount += hand.count(doraNumber);
+    }
+
+    if (doraCount != 0) {
+      yaku.add('도라');
+      yaku.add('${doraCount}');
     }
   }
 }

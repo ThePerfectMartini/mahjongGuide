@@ -24,5 +24,5 @@ void test(HandInfo info) {
   }
   print('쯔모? : ${info.isTsumo}');
   print(info.fu);
+  print(info.dora);
 }
-
