@@ -88,7 +88,11 @@ class YakuStatus {
       if (digitGroups.keys.toSet().containsAll({1, 4, 7})) {
         int ittsu = digitGroups[1]!.first;
         if (digitGroups[4]!.first == ittsu && digitGroups[7]!.first == ittsu) {
-          yaku.add('일기통관');
+          if (typeGroups[1]!.contains(MentsuType.Shuntsu) &&
+              typeGroups[4]!.contains(MentsuType.Shuntsu) &&
+              typeGroups[7]!.contains(MentsuType.Shuntsu)) {
+            yaku.add('일기통관');
+          }
           return;
         }
       }
